@@ -14,7 +14,10 @@ import com.budget_planner.budget_backend.service.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://budget-planner2-smoky.vercel.app"
+})
 public class UserController {
 
     private final UserService userService;
