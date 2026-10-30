@@ -1,3 +1,4 @@
+import Payments from "./Payments";
 import Signup from "./Signup";
 import Signin from "./Signin";
 import { useState, useEffect } from "react";
@@ -88,6 +89,7 @@ const [showForm, setShowForm] = useState(false);
 const [sidebarOpen, setSidebarOpen] = useState(false);
 const [mobilePreview, setMobilePreview] = useState(false);
 const [showSettings, setShowSettings] = useState(false);
+const [showPayments, setShowPayments] = useState(false);
 const [showNotifications, setShowNotifications] = useState(false);
 const [notificationsEnabled, setNotificationsEnabled] = useState(() => {
   return localStorage.getItem("budgetPlannerNotifications") !== "false";
@@ -533,13 +535,26 @@ const handleUpdateSubmit = async (e) => {
             <PiggyBank size={19} />
             Savings Goals
           </a>
-
+          <button
+  className="nav-item"
+  onClick={() => {
+    setShowPayments(true);
+    setShowSettings(false);
+    setSidebarOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }}
+>
+  <CreditCard size={19} />
+  Payments
+</button>
           <button
   className="nav-item settings-nav-button"
   onClick={() => {
-    setShowSettings(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }}
+  setShowSettings(true);
+  setShowPayments(false);
+  setSidebarOpen(false);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}}
 >
   <Settings size={19} />
   Settings
@@ -670,7 +685,7 @@ const handleUpdateSubmit = async (e) => {
             </div>
           </div>
         </header>
-{!showSettings && (
+{!showSettings && !showPayments && (
   <>
     <section className="welcome-row">
       <div>
@@ -1285,8 +1300,21 @@ const handleUpdateSubmit = async (e) => {
 
     </div>
   </section>
+  
+)}
+{showPayments && (
+  <Payments
+    currentUser={currentUser}
+    formatMoney={formatMoney}
+    onBack={() => setShowPayments(false)}
+    onPaymentSuccess={async () => {
+      const data = await getTransactions(currentUser.id);
+      setTransactions(data);
+    }}
+  />
 )}
         <footer className="footer">
+          
           <p>© 2026 Budget Planner | Personal Finance Management</p>
           <p>Manage money. Build better habits.</p>
         </footer>
