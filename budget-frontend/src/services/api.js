@@ -1,7 +1,8 @@
+
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://budget-planner-backend-eh1w.onrender.com",
+  baseURL: "https://budget-planner-backend-eh1w.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
